@@ -1,0 +1,6 @@
+# Ignore
+dist/
+node_modules/
+Docs/
+tmp/
+.vscode

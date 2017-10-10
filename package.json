@@ -1,0 +1,55 @@
+{
+  "name": "employee-holidays",
+  "version": "0.0.1",
+  "description": "SPA for accounting holidays and non-working days of the team of developers with the ability to administer the team, viewing statistics, and the application settings page.",
+  "main": "index.js",
+  "scripts": {
+    "gulp": "gulp --gulpfile ./tasks/gulpfile.js",
+    "test": "karma start karma.conf.js"
+  },
+  "keywords": [
+    "loomlogic",
+    "spa",
+    "employee",
+    "holidays",
+    "test",
+    "angularjs"
+  ],
+  "author": "Maryna Usatiuk",
+  "license": "MIT",
+  "dependencies": {
+    "@uirouter/angularjs": "^1.0.8",
+    "angular": "^1.6.6",
+    "angular-animate": "^1.6.6",
+    "angular-chart.js": "^1.1.1",
+    "angular-mocks": "^1.6.6",
+    "angular-route": "^1.6.6",
+    "angular-touch": "^1.6.6",
+    "angular-ui-bootstrap": "^2.5.0",
+    "bootstrap": "^3.3.7"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.18.13",
+    "coffeescript": "^.0.1",
+    "del": "^3.0.0",
+    "event-stream": "^3.3.4",
+    "gulp": "^3.9.1",
+    "gulp-angular-order": "^1.1.0",
+    "gulp-autoprefixer": "^4.0.0",
+    "gulp-cache": "^0.4.6",
+    "gulp-clean-css": "^3.9.0",
+    "gulp-coffee": "^2.3.4",
+    "gulp-concat": "^2.6.1",
+    "gulp-imagemin": "^3.4.0",
+    "gulp-inject": "^4.3.0",
+    "gulp-load-plugins": "^1.5.0",
+    "gulp-pug": "^3.3.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^3.1.0",
+    "gulp-sass-lint": "^1.3.4",
+    "gulp-sourcemaps": "^2.6.1",
+    "gulp-uglify": "^3.0.0",
+    "gulp-util": "^3.0.8",
+    "imagemin-pngquant": "^5.0.1"
+  }
+}
