@@ -1,4 +1,4 @@
-nav(class="navbar navbar-default navbar-fixed-top")
+nav(class="navbar navbar-default navbar-static-top")
     div(class="container-fluid")
         div(class="navbar-header")
             button( type="button"
@@ -6,14 +6,13 @@ nav(class="navbar navbar-default navbar-fixed-top")
                     uib-dropdown-toggle
                     class = "navbar-toggle collapsed"
                     aria-expanded = "false"
-                    ng-init = "navCollapsed = false"
-                    ng-click = "navCollapsed = !navCollapsed")
+                    ng-click = "$ctrl.toggleVisibilityLinks()")
                 span(class="sr-only") Toggle navigation
                 span(class="icon-bar")
                 span(class="icon-bar")
                 span(class="icon-bar")
             a(class="navbar-brand" href="#") BRAND
-        div(class="collapse navbar-collapse" ng-class="!navCollapsed && 'in'")
+        div(class="collapse navbar-collapse" uib-collapse="$ctrl.isVisibleNav")
             ul(class="nav navbar-nav")
                 li(ui-sref-active="active")
                     a(ui-sref="statistic()") Statistic

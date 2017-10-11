@@ -1,13 +1,11 @@
 ((angular) ->
-    SettingsCntl = ['$scope', '$element', '$attrs', 
-    ($scope, $element, $attrs) ->
-        console.log This is SettingsCntl
-        return
-    ]
-
+    class SettingsCntl
+        constructor: () ->
+            console.log 'This is SettingsCntl'
+   
     angular.module('settings.view', [])
     .component 'ehaSettings',
         templateUrl: './template/settings.component.html'
-        controller: SettingsCntl
+        controller: [SettingsCntl]
     return
 )(window.angular)

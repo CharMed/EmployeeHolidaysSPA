@@ -1,5 +1,6 @@
 ((angular) ->
     angular.module('app.main', [    'ui.router',
+                                    'anim-in-out',
                                     'main.view',
                                     'app.employee',
                                     'app.settings',
