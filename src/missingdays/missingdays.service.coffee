@@ -23,3 +23,11 @@
     за типом
     за користувачем
 ###
+((angular) ->
+    angular.module('missingdays.service', [])
+    .factory 'MissingDaysService', [ () ->
+        new class MissingDaysService
+            constructor: ->
+                console.log 'This is MissingDaysService'
+    ]
+)(window.angular)

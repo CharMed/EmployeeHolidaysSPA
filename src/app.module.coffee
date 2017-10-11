@@ -1,4 +1,4 @@
 ((angular) ->
-    angular.module 'employeeHolydaysApp', ['mainComponent']
+    angular.module 'app', ['app.main']
     return
 )(window.angular)

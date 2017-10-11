@@ -15,3 +15,12 @@
     4. Список усіх доступних користувачів (з фільтром): активний, ПІБ
     5. Користувач по ідентифікатору
 ###
+
+((angular) ->
+    angular.module('employee.employee-service', [])
+        .factory 'EmployeeService', [() ->
+            new class EmployeeService
+                constructor: ->
+                    console.log 'This is EmployeeService'
+    ]
+)(window.angular)

@@ -12,3 +12,11 @@
     4. отримання прогулів за рік/місяць
 
 ###
+((angular) ->
+    angular.module('statistic.service', [])
+        .factory 'StatisticService', [() ->
+            new class StatisticService
+                constructor: ->
+                    console.log 'This is StatisticService'
+    ]
+)(window.angular)
