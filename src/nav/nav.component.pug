@@ -1,0 +1,24 @@
+nav(class="navbar navbar-default navbar-fixed-top")
+    div(class="container-fluid")
+        div(class="navbar-header")
+            button( type="button"
+                    uib-dropdown
+                    uib-dropdown-toggle
+                    class = "navbar-toggle collapsed"
+                    aria-expanded = "false"
+                    ng-init = "navCollapsed = false"
+                    ng-click = "navCollapsed = !navCollapsed")
+                span(class="sr-only") Toggle navigation
+                span(class="icon-bar")
+                span(class="icon-bar")
+                span(class="icon-bar")
+            a(class="navbar-brand" href="#") BRAND
+        div(class="collapse navbar-collapse" ng-class="!navCollapsed && 'in'")
+            ul(class="nav navbar-nav")
+                li(ui-sref-active="active")
+                    a(ui-sref="statistic()") Statistic
+                li(ui-sref-active="active")
+                    a(ui-sref="employee()") Employee
+                li(ui-sref-active="active")
+                    a(ui-sref="settings()") Settings
+            eha-current-date(class="navbar-right hidden-xs eha-current-date col-sm-3 col-md-2 col-lg-2")
