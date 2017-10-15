@@ -1,1 +1,77 @@
-div(class="eha-settings anim-fade") This is Settings
+div(class="anim-fade")
+    div(uib-alert
+        class="alert-danger form-position anim-fade"
+        close="$ctrl.errvissibility = false"
+        ng-show="$ctrl.errvissibility"
+        )
+        | {{ $ctrl.errtext }}
+    form(
+        class="panel panel-default form-position" 
+        name="settingsForm"
+        )
+        legend(class="panel-heading")
+            span(class="panel-title") Hollydays Settings
+        fieldset(class="panel-body")
+            div(
+                class="form-group has-feedback"
+                ng-class="{'has-error': settingsForm.maxmounthhollydays.$invalid, 'has-success': settingsForm.maxmounthhollydays.$valid}"
+                )
+                label(for="maxmounthollydays" class="control-label") Max mount hollydays
+                input(  type="number" 
+                        class="form-control"
+                        id="maxmounthhollydays"
+                        placeholder="Max mount hhollydays"
+                        ng-model="$ctrl.maxMounthHollydays"
+                        name="maxmounthhollydays",
+                        min=0
+                        max=31)
+                p(  class="help-block"
+                    ng-show="settingsForm.maxmounthhollydays.$invalid") 
+                    | Muss be a number between 0 - 31
+            div(class="form-group has-feedback"
+                ng-class="{'has-error': settingsForm.maxyearshollydays.$invalid, 'has-success': settingsForm.maxyearshollydays.$valid}")
+                label(
+                    for="maxyearshollydays"
+                    class="control-label"
+                    )
+                    | Max years hollydays
+                input(  type="number" 
+                        class="form-control" 
+                        id="maxyearshollydays"
+                        ng-model="$ctrl.maxYearHollydays"
+                        placeholder="Max years hollydays"
+                        name="maxyearshollydays",
+                        min = 0
+                        max = 366)
+                p(  class="help-block"
+                    ng-show="settingsForm.maxyearshollydays.$invalid")
+                    | Muss be a number between 0 - 366
+        div(class="panel-footer")
+            button(type="submit"
+                    class="btn btn-default"
+                    ng-click="$ctrl.submit()") Submit
+            button(type="reset"
+                    class="btn btn-default") Reset
+
+    form(class="panel panel-default form-position")
+        legend(class="panel-heading")
+                span(class="panel-title") Calendar
+        fieldset(class="panel-body")
+            div(class="form-group")
+                div(uib-datepicker 
+                        ng-model="$ctrl.dt"
+                        datepicker-options="$ctrl.options"
+                        custom-class="getDayClass(data)")
+                p(class="help-block"
+                    ng-show="$ctrl.dt")
+                    | Selected date: {{$ctrl.dt | date:"dd.MM.yyyy"}} is {{$ctrl.isWeekendsDate($ctrl.dt)? 'Weekends': 'Work'}}
+        div(class="panel-footer")
+            button(type="submit"
+                    class="btn btn-default"
+                    ng-click="$ctrl.setWeekends($ctrl.dt, false)") Set
+            button(type="submit"
+                    class="btn btn-default"
+                    ng-click="$ctrl.setWeekends($ctrl.dt, true)") Unset
+            button(type="button"
+                    class="btn btn-default"
+                    ng-click="$ctrl.initWeekends()") Init
