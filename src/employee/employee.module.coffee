@@ -1,34 +1,64 @@
 ((angular)->
-    angular.module 'app.employee', [
-        'ui.router',
-        'employee.employee-model',
-        'employee.employee-service',
-        # 'employee.missingdays-model',
-        # 'employee.missingdays-service',
-        'employee.blockview',
-        'employee.detail',
-        'employee.list'
-        # 'employee.missingdays-edit',
-        # 'employee.missingdays-block'
+  angular.module 'app.employee', [
+    'ui.router',
+    'employee.employee-model',
+    'employee.employee-service',
+    'employee.blockview',
+    'employee.detail',
+    'employee.list'
+  ]
+  .config ['$stateProvider', ($stateProvider) ->
+      $stateProvider.state 'employee',
+        url: '/employee'
+        component: 'ehaEmployeeList'
+        resolve:
+          'employeers': ['EmployeeService', (EmployeeService) ->
+             EmployeeService.getAll().then((data)-> data.data)]
+      
+      $stateProvider.state 'employeedetail',
+        url: '/employee/:id'
+        component: 'ehaEmployeeDetail'
+        resolve:
+          'employee': ['$stateParams',
+            '$state',
+            'EmployeeService',
+            'EmployeeModelService',
+            ($stateParams, $state, EmployeeService,  EmployeeModelService) ->
+              if $stateParams.id is 'new'
+                new EmployeeModelService()
+              else EmployeeService.getById($stateParams.id).then((data)->
+                  console.log data
+                  data.data
+              , (err)->
+                  err.data
+              )
+          ]
+        # ($stateParams, $state, $uibModal) ->
+        # onEnter: ['$stateParams', '$state', '$uibModal',
+        # ($stateParams, $state, $uibModal) ->
+        #   $uibModal.open(
+        #     component: 'ehaEmployeeDetail'
+        #     # resolve:
+        #     #   'employeer': ($stateParams,
+        # $state, EmployeeService,  EmployeeModelService) ->
+        #     #     if $stateParams.id is 'new'
+        #     #       new EmployeeModelService()
+        #     #     else EmployeeService.getById($stateParams.id)
+        #     #       .then((data)->
+        #     #         console.log data
+        #     #         data.data
+        #     #       , (err)-> err.data)
+        #   )
+        #     #  // change route after modal result
+        #   .result.then(() ->
+        #       $state.go('employee')
+        #   ,() ->
+        #       $state.go('employee')
+        #   )
+        #
+      return
     ]
-    .config ['$stateProvider', '$urlServiceProvider',
-    ($stateProvider, $urlServiceProvider) ->
-        # $urlServiceProvider.rules.otherwise { state: 'employee.detail' }
-        
-        # $stateProvider.state 'employee',
-        #     url: '/employee'
-        #     component: 'ehaEmployeeList'
-            
-        $stateProvider.state 'employee.detail',
-            url: '/:id'
-            component: 'ehaEmployeeDetail'
-        
-        # $stateProvider.state 'employee.missingdays-edit',
-        #     url: '/missingdays/:id'
-        #     component: 'ehaMissingDaysEdit'
-        return
-    ]
-    return
+  return
 )(window.angular)
 
 ###

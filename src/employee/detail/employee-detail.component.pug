@@ -1,1 +1,133 @@
-div(class="employee-detail") This is Employee Detail
+div(class="anim-fade")
+    form(class="panel panel-default form-position"
+            name="detailForm")
+        legend(class="panel-heading")
+            span(class="panel-title") {{$ctrl.mode === 'add'? 'Прийняти працівника' : 'Редагування даних Працівник'}} 
+        fieldset(class="panel-body")
+            div(class="form-group has-feedback"
+                ng-class="{'has-error': detailForm.emplname.$invalid, 'has-success': detailForm.emplname.$valid}"
+            )
+                label(  for="emplname" class="control-label") Прізвище, ініціали працівника
+                input(  type="text" 
+                        class="form-control"
+                        id="emplname"
+                        placeholder="Прізвище, ім'я працівника"
+                        uib-tooltip="П.І.Б. працівника"
+                        ng-model="$ctrl.empl.name"
+                        name="emplname"
+                        minlength=3)
+                p(  class="help-block" ng-show="detailForm.emplname.$invalid") 
+                    | Не менше 3-ьох символів
+            div(class="form-group has-feedback"
+                ng-class="{'has-error': detailForm.emplpos.$invalid, 'has-success': detailForm.emplpos.$valid}"
+                )
+                label(for="emplpos" class="control-label") Посадапрацівника
+                input(  type="text" 
+                        class="form-control"
+                        id="emplpos"
+                        placeholder="Введіть посаду"
+                        uib-tooltip="Посада працівника"
+                        ng-model="$ctrl.empl.position"
+                        name="emplpos"
+                        minlength=3)
+                p(  class="help-block" ng-show="detailForm.emplpos.$invalid") 
+                    | Не менше 3-ьох символів 
+                    | Поле обов'язкове для заповнення
+            div(class="form-group has-feedback"
+                ng-class="{'has-error': detailForm.empldtSt.$invalid, 'has-success': detailForm.empldtSt.$valid}"
+                )
+                label(for="emplpos" class="control-label") Дата прийняття. (Не змінюється при "Редагуванні")
+                div(class="input-group")
+                    input(  type="text" 
+                            uib-datepicker-popup="dd.MM.yyyy"
+                            datepicker-options="$ctrl.dateOptions"
+                            clear-text= "Очистити",
+                            close-text = "Закрити",
+                            current-text = "Сьогодні",
+                            is-open="empldtSt.opened"
+                            class="form-control"
+                            id="empldtSt"
+                            placeholder="Введіть дату прийняття"
+                            ng-model="$ctrl.empl.dateStart"
+                            required
+                            name="empldtSt"
+                            uib-tooltip="Дата прийняття працівника у штат."
+                            ng-disabled = "$ctrl.mode === 'edit'"
+                            )
+                    span(class="input-group-btn")
+                        button(type="button" class="btn btn-default" ng-click="empldtSt.opened = true")
+                            i(class="glyphicon glyphicon-calendar")
+                p(class="help-block" ng-show="detailForm.empldtSt.$invalid") 
+                  | Поле обов'язкове для заповнення
+            div(class="form-group has-feedback"
+                ng-class="{'has-error': detailForm.empldtEnd.$invalid, 'has-success': detailForm.empldtEnd.$valid}"
+                )
+                label(for="emplpos" class="control-label") Дата звільнення. (Не змінюється при "Редагуванні")
+                div(class="input-group")
+                    input(  type="text" 
+                            uib-datepicker-popup="dd.MM.yyyy"
+                            datepicker-options="$ctrl.dateOptions"
+                            clear-text= "Очистити",
+                            close-text = "Закрити",
+                            current-text = "Сьогодні",
+                            is-open="empldtEnd.opened"
+                            class="form-control"
+                            id="empldtEnd"
+                            placeholder="Виберіть дату звільнення"
+                            ng-model="$ctrl.empl.dateEnd"
+                            uib-tooltip="Дата звільнення"
+                            name="empldtEnd"
+                            ng-disabled = "$ctrl.mode === 'edit'")
+                    span(class="input-group-btn")
+                        button(type="button" class="btn btn-default" ng-click="empldtEnd.opened = true")
+                            i(class="glyphicon glyphicon-calendar")
+                p(class="help-block" ng-show="detailForm.empldtEnd.$invalid") 
+                    | Заповнюється при звільненні працівника
+            div(class="form-group" ng-show="$ctrl.mode !== 'add'")
+                div(class="btn-group"  role="group")
+                    button( type="button"
+                            class="btn btn-success"
+                            ng-click="$ctrl.resume()")
+                            span(class="glyphicon glyphicon-circle-arrow-up")
+                                |  Відновити
+                    button( type="button" 
+                            class="btn btn-danger"
+                            ng-click="$ctrl.fire()")
+                            span(class="glyphicon glyphicon-remove-sign")
+                                |  Видалити
+                p(class="help-block")
+                    | При відновленні 'Дата прийняття' вставновлюється як поточна.
+                    br
+                    | При звільненні 'Дата звільнення встановлюється' як поточна.
+                           
+        div(class="panel-footer")
+            button( type="submit"
+                    ng-show = "$ctrl.mode === 'add'"
+                    class="btn btn-default"
+                    ng-click="$ctrl.add()")
+                    span(class="glyphicon glyphicon-plus-sign")
+                        |  Додати
+            button( type="button"
+                    ng-show = "$ctrl.mode === 'add'"
+                    ng-click="$ctrl.generate()"
+                    class="btn btn-default") 
+                    span(class="glyphicon glyphicon-random")
+                        |  Генерувати
+            button( type="submit"
+                    ng-show = "$ctrl.mode === 'edit'"
+                    class="btn btn-default"
+                    ng-click="$ctrl.edit()")
+                    span(class="glyphicon glyphicon-edit")
+                        |  Редагувати
+            button( type="reset"
+                    ng-click="$ctrl.back()"
+                    class="btn btn-default") 
+                    span(class="glyphicon glyphicon-ban-circle")
+                        |  Відмінити
+
+            
+
+
+
+
+

@@ -1,1 +1,24 @@
-div(class="employee-block") This is Employee Blockview
+div(class="anim-fade col-xs-12 col-sm-4 col-md-3 col-lg-2" )
+
+    div(class="anim-fade panel panel-default" )
+        div(class="panel-body" ng-show="!$ctrl.add") 
+            h3
+                span(class="title-empployee" ng-class="$ctrl.employee.statusClass") {{$ctrl.employee.name}}
+                br
+                small {{$ctrl.employee.position}}
+            div(class="panel-footer" ng-show="!$ctrl.add")
+                a(  ui-sref="employeedetail({ id: '' + $ctrl.employee.id})"
+                            class="btn btn-default"
+                            uib-tooltip="Натисніть, щоб редагувати працівника")
+                            span(class="glyphicon glyphicon-edit")
+                                | Змінити
+                a(  ui-sref="missingdaysedit({ userid: ''+ $ctrl.employee.id, id: 'new'})"
+                            class="btn btn-default"
+                            uib-tooltip="Натисніть, щоб додати неробочі дні")
+                            span(class="glyphicon glyphicon-calendar")
+                                | Додати 
+    div(class="panel-body" ng-show = "$ctrl.add")
+    div(class="panel-footer" ng-show = "$ctrl.add")
+        a( class="btn btn-primary btn-lg"
+                ui-sref = "employeedetail({id: 'new'})"
+                uib-tooltip="Натисніть, щоб додати працівника") Додати 

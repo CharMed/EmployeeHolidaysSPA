@@ -1,2 +1,37 @@
-div(class="employee-list anim-fade") This is Employee List
-ui-view
+div(class="anim-fade") 
+    form( class="panel form-inline" name="filterForm" )
+        fieldset(class="panel-body")
+            div(class="col-xs-12 col-sm-6")
+                div(class="form-group")
+                    div( class="input-group")
+                        input(  type="search"
+                                class="form-control"
+                                placeholder = "Пошук  працівника"
+                                ng-model="$ctrl.employee"
+                                ng-model-options="{delay: 100}"
+                                uib-tooltip="Пошук працівника за іменем")
+                        span(class="input-group-btn")
+                            button(class="btn btn-default" type="button") Пошук
+                            div(class="col-xs-12 col-sm-6")
+            div(class="col-xs-12 col-sm-6")             
+                div(class="form-group")
+                    div(class="checkbox")
+                        label
+                            input(type="checkbox" ng-model="$ctrl.activity") 
+                            | Бачити тільки активних
+
+                                     
+
+    div(class="panel panel-default")
+        div(class="panel-body")
+            eha-employee-block(add="true")
+            eha-employee-block(
+                ng-repeat="empl in $ctrl.employeers | filter: {name : $ctrl.employee, activity: $ctrl.activity} track by empl.id"
+                employee='empl'
+            )
+//- ui-view(class="anim-in-out anim-fade" data-anim-sync="true")
+        //- | gg {{$ctrl.employeers | json}}
+        //- eha-employee-block(
+        //-     name="'Архієволокотачерепопінаковська Олександра'"
+        //-     position="'Крайній осел завжди'"
+        //-     status="'працює'")
