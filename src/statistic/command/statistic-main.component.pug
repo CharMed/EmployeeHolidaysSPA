@@ -1,1 +1,84 @@
-div(class="eha-statistic anim-fade") This is Statistic List
+div(class="anim-fade") 
+    form( class="panel form-inline" name="filterForm" )
+        fieldset(class="panel-body")
+            div(class="pull-left")
+                div(class="form-group")
+                    select(class="form-control"
+                            placeholder = "Виберіть працівника"
+                            ng-model="$ctrl.employee"
+                            ng-change = "$ctrl.changeData($ctrl.employee, $ctrl.dateFrom, $ctrl.dateTo)"
+                            ng-model-options="{delay: 1000}"
+                            uib-tooltip="Виберіть працівника для перегляду статистики")
+                        option(ng-repeat="empl in $ctrl.employeers track by empl.id" value="{{empl.id}}") {{empl.name}}
+
+                        
+                    //- input(  type="text"
+                            uib-typeahead="empl.id as empl.name for empl in $ctrl.employeers | filter:$viewValue | limitTo:8" 
+                            class="form-control"
+                            placeholder = "Виберіть працівника"
+                            ng-model="$ctrl.employee.id"
+                            ng-change = "$ctrl.changeData($ctrl.employee, $ctrl.dateFrom, $ctrl.dateTo)"
+                            ng-model-options="{delay: 1000}"
+                            uib-tooltip="Виберіть працівника для перегляду статистики")
+                div(class="form-group")
+                    div(class="input-group")
+                        input(  type="text"
+                                class="form-control"
+                                uib-datepicker-popup="dd.MM.yyyy"
+                                datepicker-options="$ctrl.options"
+                                clear-text= "Очистити",
+                                close-text = "Закрити",
+                                current-text = "Сьогодні",
+                                is-open="dateFromopened"
+                                placeholder="Дата з"
+                                ng-model="$ctrl.dateFrom"
+                                ng-model-options="{delay: 1000}"
+                                ng-change = "$ctrl.changeData($ctrl.employee, $ctrl.dateFrom, $ctrl.dateTo)"
+                                name="dateFrom"
+                                uib-tooltip="Виберіть дату, з якої отримувати дані статистики")
+                        span(class="input-group-btn")
+                           button(  type="button"
+                                    class="btn btn-default"
+                                    ng-click="dateFromopened = true")
+                                        i(class="glyphicon glyphicon-calendar")
+                div(class="form-group")
+                    div(class="input-group")
+                        input(  type="text" 
+                                class="form-control"
+                                uib-datepicker-popup="dd.MM.yyyy"
+                                datepicker-options="$ctrl.options"
+                                is-open="dateToopened"
+                                ng-change = "$ctrl.changeData($ctrl.employee, $ctrl.dateFrom, $ctrl.dateTo)"
+                                placeholder="Дата до"
+                                ng-model="$ctrl.dateTo"
+                                name="dateTo"
+                                uib-tooltip="Виберіть дату, до якої отримувати дані статистики")
+                        span(class="input-group-btn")
+                            button( type="button"
+                                    class="btn btn-default"
+                                    ng-click="dateToopened = true"
+                                    )
+                                i(class="glyphicon glyphicon-calendar")
+            div(class="btn-group pull-right")
+                button( type="submit"
+                        class="btn btn-default"
+                        ng-click="$ctrl.changeData($ctrl.employee, $ctrl.dateFrom, $ctrl.dateTo)"
+                        uib-tooltip="Натисніть, щоб застосувати визначені фільтри")
+                        span(class="glyphicon glyphicon-filter")
+                        span(class="hidden-sm") Фільтрувати
+                button( type="reset"
+                        class="btn btn-default "
+                        uib-tooltip="Натисніть, щоб скинути визначені фільтри")
+                        span(class="glyphicon glyphicon-ban-circle")
+                        span(class="hidden-sm") Скинути
+div(class="panel panel-default")
+    div(class="panel-body")
+        
+        eha-statistic-detail(class="anim-fade col-xs-12 col-sm-8"
+            weekends = "$ctrl.weekends"
+            missingsdaysarr = "$ctrl.missingsdaysarr")
+        
+        eha-missing-days-list(class="anim-fade col-xs-12 col-sm-4"
+        missingsdays = "$ctrl.missingsdays")
+
+        | {{$ctrl.missingsdays | json }}
