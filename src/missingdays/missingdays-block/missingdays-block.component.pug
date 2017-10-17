@@ -1,1 +1,19 @@
- div(class="missingdays") This is Missing days view
+div(class="anim-splice col-xs-12 thumbnail")
+    div(class="caption"
+        ng-show="!$ctrl.add")
+        h4
+            span {{$ctrl.missing.typename}}
+            br
+            small {{$ctrl.missing.from | date:"dd.MM.yyyy"}} - {{$ctrl.missing.to | date:"dd.MM.yyyy"}}
+        a(  uib-tooltip="Натисніть, щоб редагувати період"
+            ui-sref="missingdaysedit({ 'userid': '' + $ctrl.missing.userid, 'id': '' + $ctrl.missing.id })") 
+            span(class="glyphicon glyphicon-edit") 
+            | Редагувати 
+        
+    div(class = "caption"
+        ng-show = "$ctrl.add"
+        ui-sref = "missingdaysedit({ userid: $ctrl.missing.userid, id: 'new'})"
+        )
+        h4 
+            a(
+                uib-tooltip="Натисніть, щоб додати новий період") Додати 

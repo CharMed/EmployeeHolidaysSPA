@@ -1,1 +1,108 @@
-div(class="missingdays-edit") This is Missing days edit
+div(class="anim-fade")
+    form(class="panel panel-default form-position"
+        name="detailForm")
+        legend(class="panel-heading")
+            span(class="panel-title") Неробочі періоди
+        fieldset(class="panel-body")
+            div(class="form-group has-feedback"
+                ng-class="{'has-error': detailForm.mstype.$invalid, 'has-success': detailForm.mstype.$valid}"
+                )
+                label(for="mstype" class="control-label") Тип
+                select( name="mstype"
+                        class="form-control"
+                        id="mstype"
+                        ng-model="$ctrl.ms.type"
+                        placeholder="Виберіть тип неробочого дня"
+                        uib-tooltip="Виберіть тип неробочого дня"
+                        required)
+                    option(value="") Виберіть тип неробочого дня
+                    option(ng-repeat="tp in $ctrl.typeslist"
+                            value="{{tp.id}}")
+                            | {{tp.name}}
+                p( class="help-block"
+                    ng-show="detailForm.mstype.$invalid") 
+                    | Поле обов'язкове для заповнення
+                        
+            div(class="form-group has-feedback"
+                ng-class="{'has-error': detailForm.msfrom.$invalid, 'has-success': detailForm.msfrom.$valid}"
+                )
+                label(for="msfrom" class="control-label") Дата початку періоду
+                div(class="input-group")
+                    input(  type="text" 
+                            class="form-control"
+                            id="msfrom"
+                            uib-datepicker-popup="dd.MM.yyyy"
+                            datepicker-options="$ctrl.options"
+                            clear-text= "Очистити",
+                            close-text = "Закрити",
+                            current-text = "Сьогодні",
+                            is-open="msfrom.opened"
+                            placeholder="Введіть дату початку"
+                            ng-model="$ctrl.ms.from"
+                             
+                            name="msfrom")
+                    span(class="input-group-btn")
+                        button(type="button" class="btn btn-default" ng-click="msfrom.opened = true")
+                            i(class="glyphicon glyphicon-calendar")
+                p(class="help-block" ng-show="detailForm.msfrom.$invalid") 
+                   | Поле обов'язкове для заповнення
+            div( class="form-group has-feedback"
+                 ng-class="{'has-error': detailForm.msto.$invalid, 'has-success': detailForm.msto.$valid}"
+            )
+                label(for="msto" class="control-label") Дата закінчення періоду
+                div(class="input-group")
+                    input(  type="text" 
+                            uib-datepicker-popup="dd.MM.yyyy"
+                            datepicker-options="$ctrl.options"
+                            clear-text= "Очистити",
+                            close-text = "Закрити",
+                            current-text = "Сьогодні",
+                            is-open="msto.opened"
+                            class="form-control"
+                            id="msto"
+                            placeholder="Введіть дату закінчення"
+                            ng-model="$ctrl.ms.to"
+                            required
+                            name="msto")
+                    span(class="input-group-btn")
+                        button(type="button" class="btn btn-default" ng-click="msto.opened = true")
+                            i(class="glyphicon glyphicon-calendar")
+                p(class="help-block"
+                  ng-show="detailForm.msto.$invalid") 
+                    | Поле обов'язкове для заповнення
+        div(class="panel-footer")
+            button( type="button" 
+                    ng-show = "$ctrl.mode === 'add'"
+                    class="btn btn-primary"
+                    ng-click="$ctrl.add()")
+                    span(class="glyphicon glyphicon-plus-sign")
+                        |  Додати
+            button( type="button"
+                    ng-show = "$ctrl.mode === 'add'"
+                    ng-click="$ctrl.genererate()"
+                    class="btn btn-default") 
+                    span(class="glyphicon glyphicon-random")
+                        |  Генерувати
+            button( type="button"
+                    ng-show = "$ctrl.mode === 'edit'"
+                    class="btn btn-primary"
+                    ng-click="$ctrl.edit()")
+                span(class="glyphicon glyphicon-edit")
+                    |  Редагувати
+            button( type="reset"
+                    ng-click="$ctrl.back()"
+                    class="btn btn-warning")
+                    span(class="glyphicon glyphicon-ban-circle")
+                        |  Відмінити
+            button( type="button"
+                    class="btn btn-danger pull-rigth"
+                    ng-show = "$ctrl.mode === 'edit'"
+                    ng-click="$ctrl.delete()")
+                    span(class="glyphicon glyphicon-remove-sign")
+                        |  Видалити
+            
+
+
+
+
+

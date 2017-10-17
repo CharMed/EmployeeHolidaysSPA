@@ -1,0 +1,12 @@
+h3 Неробочі періоди
+
+//- eha-missing-days-block(
+//-         ng-show="$ctrl.userid != 0"
+//-         missing = "{userid: $ctrl.userid }"
+//-         add
+//- )
+
+eha-missing-days-block(
+   ng-repeat="ms in $ctrl.missingsdays track by ms.id"
+   missing = "ms"
+)
