@@ -1,85 +1,86 @@
 # TODO:FIX Рефакторинг
 ((angular) ->
-  angular.module('settings.service', [])
-    .factory 'SettingsService', ['$q',($q) ->
+  angular.module('settings.service', ['util.service'])
+    .factory 'SettingsService', ['UtilService', (UtilService)->
       new class SettingsService
-        constructor: ->
-          @debounce = 1000
-          @settingsServer = true
-          console.log 'This is SettingsService'
+        constructor: () ->
+          @util = UtilService
+          @list = @getSettingsNow()
+          @weeks = @getWeekendsNow()
+        saveSettingsToStorage: () ->
+          @util.save @util.storagesnames.settings, @list
+        getSettingsNow:()->
+          @list = (@util.get @util.storagesnames.settings) || {}
+        getSettings: () ->
+          @list = @getSettingsNow()
+          resolveData = ()=>
+            if @util.server.settings
+              {'data': @list, 'status': 200}
+          rejectsData = [{
+            rejectFn: {status: 500, text: 'Server error'}
+            rejectIf: !@util.server.settings
+          }]
+          @util.asyncData(resolveData(), rejectsData, @util.debounce)
+        setSettings: (data)->
+          resolveData = ()=>
+            if @util.server.settings
+              @list = data
+              @saveSettingsToStorage()
+              {'data': @list, 'status': 200}
+          rejectsData = [{
+            rejectFn: {status: 500, text: 'Server error'}
+            rejectIf: !@util.server.settings
+          }]
+          @util.asyncData(resolveData(), rejectsData, @util.debounce)
+        saveWeekendsToStorage: () ->
+          @util.save @util.storagesnames.weekends, @weeks
+        getWeekendsNow:()->
+          @weeks = (@util.get @util.storagesnames.weekends) || []
+        getWeekends: (dateFrom, dateTo) ->
+          @weeks = @getWeekendsNow()
+          resolveFn = () =>
+            if @util.server.weekends
+              result = []
+              if dateFrom? and dateTo? and dateFrom > 0 and dateTo > 0
+                result = @util.getInPeriod(dateFrom, dateTo, data)
+              else
+                result = angular.copy(@weeks)
+              {'data': result, 'status': 200}
+          rejectsData = [
+            {
+              rejectFn: {status: 500, text: 'Server error'}
+              rejectIf: !@util.server.weekends
+            }
+          ]
+          @util.asyncData(resolveFn(), rejectsData, @util.debounce)
+        setWeekend: (day, isDelete = false) ->
+          resolveData = ()=>
+            if @util.server.weekends
+              date = @util.normalizeDate(day)
+              index = @weeks.findIndex((elem)-> +elem is +date)
+              if isDelete and index isnt -1
+                @weeks.splice(index, 1)
+              else if not(isDelete) and index is -1
+                @weeks.push(+date)
+              @saveWeekendsToStorage()
+              {'data': @weeks, 'status': 200}
+          rejectsData = [{
+            rejectFn: {status: 500, text: 'Server error'}
+            rejectIf: !@util.server.settings
+          }]
+          @util.asyncData(resolveData(), rejectsData, @util.debounce)
         # TODO:ADD Додати державні вихідні, а не тільки суботу і неділю 
-        initWeekends: (year) ->
-          startDay = new Date "#{year}/01/01"
-          endDay = new Date (year+'/12/31')
-          console.log  "st = #{startDay} end #{endDay}"
-          curr = new Date(startDay)
-          while(+curr <= +endDay)
-            console.log curr
+        initWeekends: (fromDate, toDate) ->
+          dateFrom = @util.normalizeDate(fromDate)
+          dateTo = @util.normalizeDate(toDate)
+          curr = dateFrom
+          while(+curr <= +dateTo)
+            # console.info curr.getDay()
             if curr.getDay() is 6 or curr.getDay() is 0
-              console.log "IS Sun or Sam"
-              @setWeekendsNow(curr, false)
+              @weeks.push(+curr)
             curr.setDate(curr.getDate() + 1)
-          return
-        getSettings: ->
-          deferred = $q.defer()
-          setTimeout (->
-            if @settingsServer
-              data =
-                'maxYearHollydaysCount': localStorage.getItem 'maxYearHollydaysCount'
-                'maxMounthHollydaysCount': localStorage.getItem 'maxMounthHollydaysCount'
-              deferred.resolve {'data': data, 'status': 200}
-            else
-              deferred.reject {'status': 500}
-          ).bind(@), @debounce
-          deferred.promise
-        setSettings: (data) ->
-          deferred = $q.defer()
-          setTimeout (->
-            if @settingsServer
-              console.log "True"
-              localStorage.setItem "maxYearHollydaysCount", data.maxYearHollydaysCount
-              localStorage.setItem "maxMounthHollydaysCount", data.maxMounthHollydaysCount
-              deferred.resolve { status: 200}
-            else
-              console.log "False"
-              deferred.reject {status: 500}
-          ).bind(@), @debounce
-          deferred.promise
-        getWeekends: () ->
-          deferred = $q.defer()
-          setTimeout (->
-            if @settingsServer
-              data = JSON.parse localStorage.getItem "weekends"
-              deferred.resolve { data: data, status: 200}
-            else
-              deferred.reject {status: 500}
-          ).bind(@), @debounce
-          deferred.promise
-        setWeekends: (day, deleted = false)->
-          deferred = $q.defer()
-          setTimeout ( ->
-            if @settingsServer
-              weekends = @setWeekendsNow(day, deleted)
-              deferred.resolve {status: 200, data: weekends}
-            else
-              deferred.reject {status: 500}
-          ).bind(@), @debounce
-          deferred.promise
-
-        setWeekendsNow : (day, deleted = false) ->
-          weekends = (JSON.parse localStorage.getItem "weekends") || {}
-          date = new Date(day)
-          yearmounth = "#{date.getFullYear()}-#{date.getMonth()}"
-          if weekends?.hasOwnProperty(yearmounth)
-            index = weekends[yearmounth].indexOf(date.getDate())
-            if index isnt -1 and deleted
-              weekends[yearmounth].splice(index, 1)
-            else if index is -1 and not deleted
-              weekends[yearmounth].push(date.getDate())
-          else
-              weekends[yearmounth] = []
-              weekends[yearmounth].push(date.getDate()) if not deleted
-            localStorage.setItem "weekends", JSON.stringify weekends
-          return weekends
+          @saveWeekendsToStorage()
+          # console.info @weeks
+          return @weeks
     ]
 )(window.angular)

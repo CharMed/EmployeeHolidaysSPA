@@ -1,96 +1,51 @@
 # TODO:FIX Рефакторинг
 ((angular) ->
   class SettingsCntl
-    constructor: (SettingsService) ->
-      @settings = SettingsService
-      console.log "SettingsCntl constructor"
-      @weekends = new Object()
+    constructor: (UtilService, SettingsService) ->
+      @service = SettingsService
+      @util = UtilService
     $onInit: () ->
-      @settings.getSettings().then ((data) ->
-        @maxYearHollydays = +data.data.maxYearHollydaysCount
-        @maxMounthHollydays = +data.data.maxMounthHollydaysCount
-        return
-      ).bind(@), ((errMsg) ->
-        @errtext = "Error status: #{errMsg.status}."
-        @errvissibility = true
-        return
-      ).bind(@)
-      @settings.getWeekends().then ((data) ->
-        @weekends = data.data
-        @dt = new Date()
-        # console.log  @weekends
-        return
-      ).bind(@), ((errMsg) ->
-        @errtext = "Error status: #{errMsg.status}."
-        @errvissibility = true
-        return
-      ).bind(@)
+      # console.log @settings
+      @dt = new Date()
       @options =
-          customClass: @getDayClass.bind(@)
-      @dt = null
-      console.log "SettingsCntl onInit"
-      return
-
-    getDayClass: (data) ->
-      # console.log data
-      date = data.date
+        'customClass': @getDayClass,
+        'startingDay': 1
+      setTimeout (->@dt = null), 1000
+    
+    getDayClass:(data)=>
       mode = data.mode
-      yearmount = "#{date.getFullYear()}-#{date.getMonth()}"
-      if ((mode is 'day') and @isWeekendsDate(date)) then 'is-weekends' else ''
-      # if ((mode is 'day') and (date.getDay() is 0 or date.getDay() is 6))
-      #   'is-weekends'
-      # else
-      #   ''
-    isWeekendsDate: (dt) ->
-      date = new Date(dt)
-      yearmount = "#{date.getFullYear()}-#{date.getMonth()}"
-      if @weekends?.hasOwnProperty(yearmount)
-        index = @weekends[yearmount].indexOf(date.getDate())
-        if index isnt -1 then true else false
-      else
-        false
-    
-    submit: () ->
-      console.log "submit settings"
-      @settings.setSettings(
-        'maxYearHollydaysCount': @maxYearHollydays
-        'maxMounthHollydaysCount': @maxMounthHollydays
-      ).then (()->
-        console.log "Save settings"
-      ).bind(@), ((errMsg) ->
-        @errtext = "Error status: #{errMsg.status}."
-        @errvissibility = true
-        return
-      ).bind(@)
-      return
-    
-    initWeekends: ->
-      date = new Date (@dt)
-      console.log date
-      @settings.initWeekends(date.getFullYear())
+      date = data.date
+      'is-weekends' if (mode is 'day') and (@util.isDateInList(date, @weekends))
 
-    setWeekends:(date, deleted) ->
-      @settings.setWeekends(date, deleted).then ((data)->
+    isWeekendsDate: (day)-> @util.isDateInList(day, @weekends)
+    saveSettings: ()->
+      console.log 'Save'
+      @service.setSettings(@settings).then( (data)->
+        console.log data
+      , (errMsg) -> console.err errMsg)
+    
+    setWeekends: (date, deleted)->
+      @service.setWeekend(date, deleted).then( (data)=>
         @weekends = data.data
-        console.log "Set/Unset weekends"
-        console.log @weekends
-      ).bind(@), ((errMsg) ->
-        @errtext = "Error status: #{errMsg.status}."
-        @errvissibility = true
-        return
-      ).bind(@)
-      return
+      , (errMsg) -> console.err errMsg)
+
+    initWeekends: ()->
+      dateFrom = new Date(@dt.getFullYear(), 0, 1 , 0, 0, 0)
+      dateTo = new Date(@dt.getFullYear(), 11, 31 , 0, 0, 0)
+      @weekends = @service.initWeekends(dateFrom, dateTo)
 
 
   angular.module('settings.view', [
+    'ui.bootstrap.tooltip'
     'ui.bootstrap.datepicker',
     'settings.service'
+    'util.service'
     ])
     .component 'ehaSettings',
       templateUrl: "./template/settings.component.html"
-      controller: ['SettingsService', SettingsCntl]
-    .config(['uibDatepickerConfig', ($uibDatepickerConfig)->
-      $uibDatepickerConfig.startingDay = 1
-    ])
+      controller: ['UtilService', 'SettingsService', SettingsCntl]
+      bindings:
+        'weekends': '<',
+        'settings': '<'
   return
 )(window.angular)
