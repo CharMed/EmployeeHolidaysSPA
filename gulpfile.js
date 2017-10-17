@@ -78,7 +78,11 @@ gulp.task('sass',  function () {
         .pipe(gulp.dest('./dist/'));
 });
 
-gulp.task('outer-css', function () {
+gulp.task('fonts', function () {
+    gulp.src("./node_modules/bootstrap/fonts/**")
+        .pipe(gulp.dest(paths.dist + "/fonts/"));
+});
+gulp.task('outer-css', ['fonts'], function () {
     gulp.src(files.css)
         .on('error', $.util.log)
         .pipe($.concat(paths.concatVendorCSS))
