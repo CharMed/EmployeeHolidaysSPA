@@ -10,18 +10,14 @@
     ($stateProvider, $urlServiceProvider) ->
         $urlServiceProvider.rules.otherwise { state: 'statistic' }
         
-        $stateProvider.state 'employee',
-            url: '/employee'
-            component: 'ehaEmployeeList'
-        $stateProvider.state 'settings',
-            url: '/settings'
-            component: 'ehaSettings'
-        $stateProvider.state 'statistic',
-            url: '/statistic'
-            component: 'ehaStatisticMain'
-        $stateProvider.state 'missingdays.edit',
-            url: '/missingdays/:id'
-            component: 'ehaMissingDaysEdit'
+        # $stateProvider.state 'employee',
+        #     url: '/employee'
+        #     component: 'ehaEmployeeList'
+        # $stateProvider.state 'settings',
+        #     url: '/settings'
+        #     component: 'ehaSettings'
+
+      
         return
     ]
     return

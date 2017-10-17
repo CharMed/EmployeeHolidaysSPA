@@ -1,5 +1,8 @@
 eha-nav 
-//- span(class="eha-main") This is Main Component
-//- a(ui-sref="employee.detail({ id: 1 })") user 1
-//- a(ui-sref="employee()") user 
+div(class="alert-container-absolute")
+    div(class="alert alert-danger"
+        uib-alert
+        close="$ctrl.err.visibility = false" 
+        ng-show="$ctrl.err.visibility")
+        | {{$ctrl.err.text}}
 ui-view(class="anim-in-out anim-fade" data-anim-sync="true")

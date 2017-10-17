@@ -1,1 +1,7 @@
-div(class="eha-statistic-detail") This is Statistic Detail
+h3 Графік неробочих днів працівників
+div(class="well graph-well")
+        canvas( id="bar"
+                class="chart chart-bar " 
+                chart-data="$ctrl.data"
+                chart-labels="$ctrl.labels"
+                chart-series="$ctrl.series")

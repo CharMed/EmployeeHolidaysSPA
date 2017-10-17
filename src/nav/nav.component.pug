@@ -7,17 +7,19 @@ nav(class="navbar navbar-default navbar-static-top")
                     class = "navbar-toggle collapsed"
                     aria-expanded = "false"
                     ng-click = "$ctrl.toggleVisibilityLinks()")
-                span(class="sr-only") Toggle navigation
+                span(class="sr-only") Перемкнути навігацію
                 span(class="icon-bar")
                 span(class="icon-bar")
                 span(class="icon-bar")
-            a(class="navbar-brand" href="#") BRAND
+            a(class="navbar-brand" href="#") 
+                svg( xmlns="http://www.w3.org/2000/svg" width=20 height=20)
+                    path(style="fill:#ff0000" d="m 7.6549048,2.1096946 c -1.6018923,0.01624 -3.3167907,0.512778 -4.7763241,2.153298 l -1.6624753,2.122806 c 0.775967,0.06514 1.1017818,0.06255 2.6692004,0.24689 1.2632632,0.477543 1.3699252,1.303472 1.8263045,2.024051 0.9400608,-0.02741 1.3204634,-0.526727 2.6156673,-0.254628 l -3.0354967,6.4828744 -2.8768465,-2.840268 -0.5847376,0.608921 3.0454265,3.006608 0.1038228,-0.108315 -0.9270722,1.979906 -4.0523660465543,0 0,1.535958 20.0000001465543,0 0,-1.535958 -4.11928,0 -2.814037,-2.655499 -0.07771,0.07737 -0.0097,-0.07441 -7.193196,0.176577 3.0521172,-6.5181444 c 0.190465,0.05894 0.392791,0.128089 0.619705,0.217764 0.3643704,0.274575 0.9854648,1.090537 1.5921058,1.8759144 0.648621,-0.350162 1.113522,-0.8214944 2.716042,-0.543158 0.978992,0.147964 1.688577,0.958891 2.294699,2.024049 C 16.927487,7.5988246 14.500155,4.2237476 11.377919,2.7327216 10.39379,2.4550346 9.0683782,2.0953576 7.6549412,2.1096926 Z m 5.2104032,13.6342894 1.894731,1.787854 -10.1330744,0 0.750942,-1.603993 7.4874014,-0.183861 z")
         div(class="collapse navbar-collapse" uib-collapse="$ctrl.isVisibleNav")
             ul(class="nav navbar-nav")
                 li(ui-sref-active="active")
-                    a(ui-sref="statistic()") Statistic
+                    a(ui-sref="statistic()") Статистика
                 li(ui-sref-active="active")
-                    a(ui-sref="employee()") Employee
+                    a(ui-sref="employee()") Працівники
                 li(ui-sref-active="active")
-                    a(ui-sref="settings()") Settings
+                    a(ui-sref="settings()") Налаштування
             eha-current-date(class="navbar-right hidden-xs eha-current-date col-sm-3 col-md-2 col-lg-2")
